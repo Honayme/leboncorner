@@ -21,7 +21,8 @@ module.exports = () => {
 
     //Middleware that parses json
     server.use(bodyParser.json());
-    server.use(bodyParser.urlencoded({ extended: false}));
+    //put true in order to force to parse objects inside other object
+    server.use(bodyParser.urlencoded({ extended: true}));
 
     // Point static path to dist
     server.use(express.static('dist'));
