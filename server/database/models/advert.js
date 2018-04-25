@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Advert.associate = function(models) {
     // associations can be defined here
-    models.Advert.belongsTo(models.User, { //TODO Fail to create user_id in advert table
+    models.Advert.belongsTo(models.User, {
       foreignKey:  {
         allowNull: false
       }

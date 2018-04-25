@@ -64,3 +64,6 @@ module.exports = () => {
     start: start
   }
 };
+
+
+//TODO put the DB auth infos in .env variable

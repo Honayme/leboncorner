@@ -1,5 +1,7 @@
 'use strict';
 
+//TODO http://docs.sequelizejs.com/manual/tutorial/querying.html#operators deprecated String
+
 const bcrypt       = require('bcrypt'),
       jwtHelper    = require('../../helpers/jwtHelper'),
       models       = require('../../database/models');
