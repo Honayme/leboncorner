@@ -6,9 +6,10 @@ const
 
 let router = express.Router();
 
-router.route('/register/').post(userController.register);
-router.post('/login', userController.login); //7:33
+router.post('/register', userController.register);
+router.post('/login', userController.login);
 
+console.log("userRoute.js");
 // router.get('/users/:id', userController.getUsersWithId());
 
 module.exports = router;

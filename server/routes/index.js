@@ -20,6 +20,7 @@ function init(server) {
   server.use('/api', apiRoute);
 }
 
+console.log("routes/index.js");
 module.exports = {
   init: init
 };

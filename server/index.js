@@ -30,7 +30,7 @@ module.exports = () => {
     // Catch all other routes and return the index file
     server.get('/', (req, res) => {
       res.sendFile("index.html", {"root": 'C:/dev/AngularBee/angularBeeV2/dist'});
-  });
+    });
 
     //Set up routes by deferring that responsibility to the index.js within the routes folder.
     routes.init(server);
@@ -46,11 +46,8 @@ module.exports = () => {
         console.log('Error Connexion to database');
       }else{
         console.log('Connected to Database');
-  }
-  });
-
-
-
+      }
+    });
   };
 
   start = () => {
@@ -59,7 +56,7 @@ module.exports = () => {
 
     server.listen(port, () => {
       console.log('Express server listening on - http://' + hostname + ':' + port);
-  });
+    });
   };
 
   return{
