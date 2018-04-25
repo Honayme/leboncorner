@@ -1,11 +1,13 @@
 'use strict';
 
-const bcrypt = require('bcrypt'),
-  jwt = require('jsonwebtoken'),
-  models = require('../../database/models');
+const bcrypt       = require('bcrypt'),
+      jwtHelper    = require('../../helpers/jwtHelper'),
+      models       = require('../../database/models');
 
+let register,
+    login;
 
-function register(req, res) {
+register = (req, res) => {
 
   let username = req.body.username,
       email = req.body.email,
@@ -47,11 +49,41 @@ function register(req, res) {
       console.log(err);
       return res.status(500).json({'error': 'unable to verify user'});
     });
-}
+};
 
-function login(req, res) {
+login = (req, res) =>{
+    let email    = req.body.email,
+        password = req.body.password;
 
-}
+    if (email == null || password == null) {
+      return res.status(400).json({'error': 'missing paramaters'})
+    }
+
+    models.User.findOne({
+      where: {email: email}
+    })
+      .then(function(userFound){
+        if (userFound){
+
+          bcrypt.compare(password, userFound.password, function(errBcrypt, resBcrypt){
+            if(resBcrypt){
+              return res.status(200).json({
+                'userId': userFound.id,
+                'token' : jwtHelper.generateUserToken(userFound)
+              })
+            } else {
+              return res.status(403).json({'error': 'invalid password'})
+            }
+          })
+        }else{
+          return res.status(400).json({'error': 'user do not exist in database' })
+        }
+      })
+      .catch(function(err){
+        console.log(err);
+        return res.status(500).json({'error': 'unable to verify user'});
+      })
+};
 
 module.exports = {
   register,

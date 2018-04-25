@@ -8,8 +8,8 @@ const
 
 module.exports = () => {
   let server = express(),
-    create,
-    start;
+      create,
+      start;
 
   create = (config) => {
     let routes = require('./routes/index');
