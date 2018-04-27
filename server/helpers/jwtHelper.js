@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken'),
-      SECRET = 'secret'; //TODO Use more strong key and put it in a .env variable
+      SECRET = 'secret'; //TODO https://www.youtube.com/watch?v=F0HLIe3kNvM
 
 
 const generateUserToken = (userData) => {
@@ -12,7 +12,8 @@ const generateUserToken = (userData) => {
       })
 };
 
-
 module.exports = {
   generateUserToken
 };
+
+//TODO Rename utils and not Helper cuz this is something different

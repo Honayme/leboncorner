@@ -2,89 +2,126 @@
 
 //TODO http://docs.sequelizejs.com/manual/tutorial/querying.html#operators deprecated String
 
-const bcrypt       = require('bcrypt'),
-      jwtHelper    = require('../../helpers/jwtHelper'),
-      models       = require('../../database/models');
+const bcrypt = require('bcrypt'),
+  jwtHelper = require('../../helpers/jwtHelper'),
+  models = require('../../database/models'),
+  asyncLib = require('async'),
+  EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
 
 let register,
     login;
 
+
 register = (req, res) => {
 
-  let username = req.body.username,
-      email = req.body.email,
-      password = req.body.password;
+  let username   = req.body.username,
+      email      = req.body.email,
+      password   = req.body.password;
 
   if (email == null || username == null || password == null) {
     return res.status(400).json({'error': 'missing parameters'})
   }
 
+  if (username.length >= 15 || username.length <= 4) {
+    return res.status(400).json({'error': 'Username must contain min 4 and max 15 letters'})
+  }
+
+  if (!EMAIL_REGEX.test(email)) {
+    return res.status(400).json({'error': 'Email is not valid'})
+  }
+
+  if (!PASSWORD_REGEX.test(password)) {
+    return res.status(400).json({'error': 'Password must be between 4 and 8 digits long and include at least one numeric digit. '})
+  }
+
+
+  asyncLib.waterfall([
+    //1st function
+    function (done) {
+      models.User.findOne({
+        attributes: ['email'],
+        where: {email: email}
+      })
+        .then(function (userFound) {
+          done(null, userFound);
+        })
+        .catch(function (err) {
+          console.log("1st function :" + err);
+          return res.status(500).json({'error': 'unable to verify user'});
+        });
+    },
+    //2nd function
+    function (userFound, done) {
+      if (!userFound) {
+        bcrypt.hash(password, 5, function (err, bcryptedPassword) {
+          done(null, userFound, bcryptedPassword);
+        });
+      } else {
+        return res.status(409).json({'error': 'user already exist'});
+      }
+    },
+    //3rd function
+    function (userFound, bcryptedPassword, done) {
+      models.User.create({
+        email: email,
+        username: username,
+        password: bcryptedPassword
+      })
+        .then(function (newUser) {
+          done(newUser);
+          console.log("New user has been created");
+        })
+        .catch(function (err) {
+          console.log("3rd function " + err);
+          return res.status(500).json({'error': 'cannot add user'});
+        });
+    }
+  ], function (newUser) {
+    if (newUser) {
+      return res.status(201).json({
+        'userId': newUser.id,
+        'bcryptedPassword': newUser.password
+      });
+    } else {
+      console.log("error when adding a user" + err);
+      return res.status(500).json({'error': 'cannot add user'});
+    }
+  });
+};
+
+login = (req, res) => {
+  let email = req.body.email,
+    password = req.body.password;
+
+  if (email == null || password == null) {
+    return res.status(400).json({'error': 'missing paramaters'})
+  }
+
   models.User.findOne({
-    attributes: ['email'],
     where: {email: email}
   })
     .then(function (userFound) {
-      if (!userFound) {
-        bcrypt.hash(password, 5, function (err, bcryptedPassword) {
-          models.User.create({
-            email: email,
-            username: username,
-            password: bcryptedPassword
-          })
-            .then(function (newUser) {
-              console.log("New user has been created");
-              return res.status(201).json({
-                'userId': newUser.id,
-                'bcryptedPassword': newUser.password
-              })
+      if (userFound) {
+
+        bcrypt.compare(password, userFound.password, function (errBcrypt, resBcrypt) {
+          if (resBcrypt) {
+            return res.status(200).json({
+              'userId': userFound.id,
+              'token': jwtHelper.generateUserToken(userFound)
             })
-            .catch(function (err) {
-              console.log(err);
-              return res.status(500).json({'error': 'fail add user'});
-            });
-        });
-      }else {
-        return res.status(400).json({'error': 'user already exist'});
+          } else {
+            return res.status(403).json({'error': 'invalid password'})
+          }
+        })
+      } else {
+        return res.status(400).json({'error': 'user do not exist in database'})
       }
     })
     .catch(function (err) {
       console.log(err);
       return res.status(500).json({'error': 'unable to verify user'});
-    });
-};
-
-login = (req, res) =>{
-    let email    = req.body.email,
-        password = req.body.password;
-
-    if (email == null || password == null) {
-      return res.status(400).json({'error': 'missing paramaters'})
-    }
-
-    models.User.findOne({
-      where: {email: email}
     })
-      .then(function(userFound){
-        if (userFound){
-
-          bcrypt.compare(password, userFound.password, function(errBcrypt, resBcrypt){
-            if(resBcrypt){
-              return res.status(200).json({
-                'userId': userFound.id,
-                'token' : jwtHelper.generateUserToken(userFound)
-              })
-            } else {
-              return res.status(403).json({'error': 'invalid password'})
-            }
-          })
-        }else{
-          return res.status(400).json({'error': 'user do not exist in database' })
-        }
-      })
-      .catch(function(err){
-        console.log(err);
-        return res.status(500).json({'error': 'unable to verify user'});
-      })
 };
 
 module.exports = {

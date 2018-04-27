@@ -1,4 +1,4 @@
-const dotenv = require('dotenv').config();
+const dotenv = require('dotenv').config({path: 'C:\\dev\\leboncorner\\.env'});
 
 module.exports = {
   development: {
@@ -9,7 +9,7 @@ module.exports = {
     port: process.env.DB_PORT,
     dialect: 'mysql',
     define: {
-      underscored: true
+      underscored: false
     },
   },
 };

@@ -4,7 +4,9 @@ const
   path        = require('path'),
   http        = require('http'),
   bodyParser  = require('body-parser'),
-  mysql       = require('mysql');
+  mysql       = require('mysql'),
+  dotenv      = require('dotenv').config();
+
 
 module.exports = () => {
   let server = express(),
@@ -66,4 +68,3 @@ module.exports = () => {
 };
 
 
-//TODO put the DB auth infos in .env variable

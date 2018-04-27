@@ -3,7 +3,6 @@
 const
   apiRoute = require('./api/index');
 
-console.log('passeSurLindex');
 
 function init(server) {
   server.get('*', function (req, res, next) {
@@ -20,7 +19,6 @@ function init(server) {
   server.use('/api', apiRoute);
 }
 
-console.log("routes/index.js");
 module.exports = {
   init: init
 };
