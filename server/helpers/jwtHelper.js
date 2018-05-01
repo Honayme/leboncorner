@@ -12,8 +12,29 @@ const generateUserToken = (userData) => {
       })
 };
 
+const parseAuthorization = (authorization) => {
+  return (authorization != null) ? authorization.replace('Bearer ', '') : null;
+};
+
+const getUserId = (authorization) => {
+  let userId = -1;
+  let token = module.exports.parseAuthorization(authorization); // Module.exports pour préciser qu'on est dans le même module
+  if(token != null){
+    try{
+      let jwtToken = jwt.verify(token, SECRET);
+      if(jwtToken != null)
+        userId = jwtToken.userId;
+    } catch(err) {
+      console.log(err);
+    }
+  }
+  return userId
+};
+
 module.exports = {
-  generateUserToken
+  generateUserToken,
+  parseAuthorization,
+  getUserId
 };
 
 //TODO Rename utils and not Helper cuz this is something different

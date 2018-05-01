@@ -1,16 +1,17 @@
 'use strict';
 
 //TODO http://docs.sequelizejs.com/manual/tutorial/querying.html#operators deprecated String
-
-const bcrypt = require('bcrypt'),
-  jwtHelper = require('../../helpers/jwtHelper'),
-  models = require('../../database/models'),
-  asyncLib = require('async'),
-  EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-  PASSWORD_REGEX = /^(?=.*\d).{4,8}$/;
+//TODO ES6 import : import bcrypt from 'bcrypt';
+const bcrypt          = require('bcrypt'),
+      jwtHelper       = require('../../helpers/jwtHelper'),
+      models          = require('../../database/models'),
+      asyncLib        = require('async'),
+      EMAIL_REGEX     = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      PASSWORD_REGEX  = /^(?=.*\d).{4,8}$/;
 
 let register,
-    login;
+    login,
+    getUserProfile;
 
 
 register = (req, res) => {
@@ -98,33 +99,79 @@ login = (req, res) => {
     return res.status(400).json({'error': 'missing paramaters'})
   }
 
-  models.User.findOne({
-    where: {email: email}
-  })
-    .then(function (userFound) {
-      if (userFound) {
-
-        bcrypt.compare(password, userFound.password, function (errBcrypt, resBcrypt) {
-          if (resBcrypt) {
-            return res.status(200).json({
-              'userId': userFound.id,
-              'token': jwtHelper.generateUserToken(userFound)
-            })
-          } else {
-            return res.status(403).json({'error': 'invalid password'})
-          }
+  asyncLib.waterfall([
+    //1st function
+    function (done) {
+        models.User.findOne({
+          where: {email: email}
         })
-      } else {
-        return res.status(400).json({'error': 'user do not exist in database'})
+          .then(function (userFound) {
+            done(null, userFound);
+            console.log("Done of the first function" + done);
+          })
+          .catch(function (err) {
+            console.log("1st function" + err);
+            return res.status(500).json({'error': 'unable to verify user'});
+          });
+      },
+    //2nd function
+    function (userFound, done) {
+        if (userFound) {
+          bcrypt.compare(password, userFound.password, function (errBycrypt, resBycrypt) {
+            done(null, userFound, resBycrypt);
+          });
+        } else {
+          return res.status(404).json({'error': 'user not exist in DB'});
+        }
+      },
+    //3rd function
+    function (userFound, resBycrypt, done) {
+        if (resBycrypt) {
+          done(userFound);
+        } else {
+          return res.status(403).json({'error': 'invalid password'});
+        }
       }
-    })
-    .catch(function (err) {
-      console.log(err);
-      return res.status(500).json({'error': 'unable to verify user'});
-    })
+  ], function (userFound) {
+      if (userFound) {
+        return res.status(201).json({
+          'userId': userFound.id,
+          'token': jwtHelper.generateUserToken(userFound)
+        });
+      } else {
+        return res.status(500).json({'error': 'cannot log on user'});
+      }
+    }
+  )
+};
+
+getUserProfile = (req, res) => {
+  //Get authorization header of our request
+  console.log(req.headers);
+  let headerAuth = req.headers['authorization'];
+  let userId     = jwtHelper.getUserId(headerAuth);
+
+  if(userId < 0){
+    return res.status(400).json({'error': 'wrong token'});
+  }
+
+  models.User.findOne({
+    attributes: ['id','email','username'],
+    where: {id: userId}
+  }).then(function(user){
+    if (user) {
+      res.status(201).json(user);
+    } else {
+      res.status(404).json({'error': 'user not found'});
+    }
+  }).catch(function(err){
+    console.log(err);
+    res.status(500).json({'error': 'cannot fetch user'});
+  });
 };
 
 module.exports = {
   register,
-  login
+  login,
+  getUserProfile
 };
