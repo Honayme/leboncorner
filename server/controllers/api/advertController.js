@@ -73,7 +73,6 @@ getAllAdvert = (req, res) => {
 
   models.Advert.findAll({
     order:      [(order != null) ? order.split(':') : ['title', 'ASC']],
-    // attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
     attributes: ['title'],
     limit:      (!isNaN(limit)) ? limit : null,
     offset:     (!isNaN(offset)) ? offset : null,
@@ -94,11 +93,76 @@ getAllAdvert = (req, res) => {
 };
 
 getDetailAdvert= (req, res) => {
+  let fields  = req.query.fields;
+  let limit   = parseInt(req.query.limit);
+  let offset  = parseInt(req.query.offset);
+  let order   = req.query.order;
 
+
+  models.Advert.findAll({
+    order:      [(order != null) ? order.split(':') : ['title', 'ASC']],
+    attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
+    limit:      (!isNaN(limit)) ? limit : null,
+    offset:     (!isNaN(offset)) ? offset : null,
+    include: [{
+      model: models.User,
+      attributes: [ 'username' ]
+    }]
+  }).then(function(advert) {
+    if (advert) {
+      res.status(200).json(advert);
+    } else {
+      res.status(404).json({ "error": "no advert found" });
+    }
+  }).catch(function(err) {
+    console.log(err);
+    res.status(500).json({ "error": "invalid fields" });
+  });
 };
 
 getUserAdvert = (req, res) => {
+  let headerAuth = req.headers['authorization'];
+  let userId     = jwtHelper.getUserId(headerAuth);
 
+  let fields  = req.query.fields;
+
+  asyncLib.waterfall([
+    function(done) {
+      models.User.findOne({
+        where: { id: userId }
+      })
+        .then(function(userFound) {
+          done(null, userFound);
+        })
+        .catch(function(err) {
+          console.log("1st function when try to find user "+err);
+          return res.status(500).json({ 'error': 'unable to verify user' });
+        });
+    },
+    function(userFound, done) {
+      if (userFound) {
+        models.Advert.findAll({
+          attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
+          where: {id: userId},
+          include: [{
+            model: models.User,
+            attributes: ['username']
+          }]
+        })
+          .then(function (userAdvertFound) {
+          done(userAdvertFound);
+        });
+      } else {
+        res.status(404).json({'error': 'user not found'});
+      }
+    }
+  ], function(userAdvertFound) {
+        if (userAdvertFound) {
+          return res.status(201).json(userAdvertFound);
+        } else {
+          return res.status(500).json({ 'error': 'cannot find the required Advert' });
+        }
+      });
 };
 
 updateAdvert = (req, res) => {
@@ -112,5 +176,7 @@ deleteAdvert = (req, res) => {
 
 module.exports = {
   createAdvert,
-  getAllAdvert
+  getAllAdvert,
+  getDetailAdvert,
+  getUserAdvert
 };
