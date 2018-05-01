@@ -148,7 +148,6 @@ login = (req, res) => {
 
 getUserProfile = (req, res) => {
   //Get authorization header of our request
-  console.log(req.headers);
   let headerAuth = req.headers['authorization'];
   let userId     = jwtHelper.getUserId(headerAuth);
 
