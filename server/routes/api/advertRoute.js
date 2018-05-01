@@ -7,7 +7,7 @@ const
 let router = express.Router();
 
 router.post('/create', advertController.createAdvert);
-// router.get('/list', advertController.login);
+router.get('/all', advertController.getAllAdvert);
 // router.put('/update', advertController.getUserProfile);
 // router.delete('/delete', advertController.updateUserProfile);
 

@@ -12,7 +12,6 @@ let createAdvert,
     updateAdvert,
     deleteAdvert;
 
-//TODO Vérifier si on utilise bien l'ORM pour les champs required et les contraintes de taille
 createAdvert = (req, res) => {
 
   let headerAuth = req.headers['authorization'];
@@ -34,6 +33,7 @@ createAdvert = (req, res) => {
           done(null, userFound);
         })
         .catch(function(err) {
+          console.log("1st function when try to find user "+err);
           return res.status(500).json({ 'error': 'unable to verify user' });
         });
     },
@@ -64,7 +64,53 @@ createAdvert = (req, res) => {
 
 };
 
+getAllAdvert = (req, res) => {
+  let fields  = req.query.fields;
+  let limit   = parseInt(req.query.limit);
+  let offset  = parseInt(req.query.offset);
+  let order   = req.query.order;
+
+
+  models.Advert.findAll({
+    order:      [(order != null) ? order.split(':') : ['title', 'ASC']],
+    // attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
+    attributes: ['title'],
+    limit:      (!isNaN(limit)) ? limit : null,
+    offset:     (!isNaN(offset)) ? offset : null,
+    include: [{
+      model: models.User,
+      attributes: [ 'username' ]
+    }]
+  }).then(function(advert) {
+    if (advert) {
+      res.status(200).json(advert);
+    } else {
+      res.status(404).json({ "error": "no advert found" });
+    }
+  }).catch(function(err) {
+    console.log(err);
+    res.status(500).json({ "error": "invalid fields" });
+  });
+};
+
+getDetailAdvert= (req, res) => {
+
+};
+
+getUserAdvert = (req, res) => {
+
+};
+
+updateAdvert = (req, res) => {
+
+};
+
+deleteAdvert = (req, res) => {
+
+};
+
 
 module.exports = {
-  createAdvert
+  createAdvert,
+  getAllAdvert
 };
