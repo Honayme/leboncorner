@@ -143,7 +143,7 @@ getUserAdvert = (req, res) => {
       if (userFound) {
         models.Advert.findAll({
           attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
-          where: {id: userId},
+          where: {userId: userId},
           include: [{
             model: models.User,
             attributes: ['username']

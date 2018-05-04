@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Advert.associate = function(models) {
     // associations can be defined here
-    models.Advert.belongsTo(models.User, {
+    Advert.belongsTo(models.User, {
       foreignKey:  {
         allowNull: false
       }
@@ -17,3 +17,5 @@ module.exports = (sequelize, DataTypes) => {
   };
   return Advert;
 };
+
+//TODO Put validation on model http://docs.sequelizejs.com/manual/tutorial/models-definition.html#model-validations

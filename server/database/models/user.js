@@ -7,7 +7,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   User.associate = function(models) {
     // associations can be defined here
-    models.User.hasMany(models.Advert);
+    User.hasMany(models.Advert);
   };
+
+  //TODO Externalize some method
+  // User.prototype.verifyPassword = function () {};
   return User;
 };
+
