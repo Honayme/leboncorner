@@ -10,6 +10,5 @@ export class PostsService {
   // Get all posts from the API
   getAllPosts() {
     return this.http.get('/api/posts');
-
   }
 }

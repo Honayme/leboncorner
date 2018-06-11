@@ -35,3 +35,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
     route => Your route Module Name
     
 Create module and routing 
+
+##Install Bootstrap & jQuery 
+
+>npm install bootstrap@4 jquery --save
+
