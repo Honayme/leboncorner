@@ -1,38 +1,25 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+
+import {AdvertsModule} from './modules/adverts/adverts.module';
 
 import { AppComponent } from './app.component';
-import { PostsComponent } from './posts/posts.component';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import {PostsService} from './posts.service';
-
-// Define the routes
-const ROUTES = [
-  {
-    path: '',
-    redirectTo: 'posts',
-    pathMatch: 'full'
-  },
-  {
-    path: 'posts',
-    component: PostsComponent
-  }
-];
+import {routing} from './app.routing';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PostsComponent
   ],
   imports: [
+    AdvertsModule,
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(ROUTES) // Add routes to the app
+    routing
   ],
-  providers: [PostsService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

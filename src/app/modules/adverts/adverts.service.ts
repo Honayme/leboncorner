@@ -4,14 +4,10 @@ import 'rxjs/add/operator/map';
 
 
 @Injectable()
-
 export class AdvertsService {
 
-  constructor(private http: HttpClient) {
-    getAllPosts() {
-      return this.http.get('/api/adverts/all').subscribe(res => {
-        console.log(res);
-      });
+  constructor(private httpClient: HttpClient) {}
+    getAllAdverts() {
+      return this.httpClient.get('/api/adverts');
     }
-  }
 }
