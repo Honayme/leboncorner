@@ -12,10 +12,10 @@ export class AdvertsComponent implements OnInit {
   constructor( private advertsService: AdvertsService) {}
 
   ngOnInit() {
-    this.advertsService.getAllAdverts().subscribe(adverts => {
-      this.adverts = adverts;
-      console.log(adverts);
-    });
+    this.advertsService.getAll()
+      .subscribe(res => {
+        this.adverts = res;
+        console.log((this.adverts));
+      });
   }
-
 }
