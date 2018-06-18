@@ -10,6 +10,7 @@ export class AdvertsService {
   constructor(private http: HttpClient) {
   }
     getAll(): Observable<Adverts[]> {
-      return this.http.get<Adverts[]>('/api/adverts/all');
+      //return this.http.get<Adverts[]>('/api/adverts/all'); Run build
+      return this.http.get<Adverts[]>('http://localhost:3000/api/adverts/all'); // ng serve
     }
 }

@@ -5,6 +5,7 @@ const
   http        = require('http'),
   bodyParser  = require('body-parser'),
   mysql       = require('mysql'),
+  cors        = require('cors'),
   dotenv      = require('dotenv').config();
 
 
@@ -14,6 +15,9 @@ module.exports = () => {
       start;
 
   create = (config) => {
+    //Allow cors origin
+    server.use(cors());
+
     let routes = require('./routes/index');
 
     //Server settings
@@ -33,6 +37,13 @@ module.exports = () => {
     server.get('/', (req, res) => {
       res.sendFile("index.html", {"root": 'C:/dev/AngularBee/angularBeeV2/dist'});
     });
+    //
+    // server.use(function(req, res, next) {
+    //   res.header("Access-Control-Allow-Origin", "*");
+    //   res.header("Access-Control-Allow-Methods", 'GET, PUT, PATCH, POST, DELETE');
+    //   res.header("Access-Control-Allow-Headers", "Content-Type");
+    //   next();
+    // });
 
     //Set up routes by deferring that responsibility to the index.js within the routes folder.
     routes.init(server);
@@ -66,5 +77,4 @@ module.exports = () => {
     start: start
   }
 };
-//TODO Erreur fichier "dangeureux" Github
 

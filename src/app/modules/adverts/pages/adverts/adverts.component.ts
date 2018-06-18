@@ -9,12 +9,12 @@ import {AdvertsService} from '../../adverts.service';
 export class AdvertsComponent implements OnInit {
 
   adverts: any = [];
+
   constructor( private advertsService: AdvertsService) {}
 
   ngOnInit() {
-    this.advertsService.getAll()
-      .subscribe(res => {
-        this.adverts = res;
+    this.advertsService.getAll().subscribe(adverts => {
+        this.adverts = adverts;
         console.log((this.adverts));
       });
   }
