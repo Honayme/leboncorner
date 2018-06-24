@@ -13,8 +13,7 @@ import {AdvertsService} from './modules/adverts/adverts.service';
 import {routing} from './app.routing';
 import { RegisterComponent } from './modules/Auth/register/register.component';
 import { LoginComponent } from './modules/Auth/login/login.component';
-import { RegisterService } from './modules/Auth/resgister.service';
-import { LoginService } from './modules/Auth/login.service';
+import { AuthService } from './modules/Auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +30,7 @@ import { LoginService } from './modules/Auth/login.service';
     HttpClientModule,
     routing
   ],
-  providers: [AdvertsService, RegisterService, LoginService],
+  providers: [AdvertsService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -167,6 +167,63 @@ getUserAdvert = (req, res) => {
 
 updateAdvert = (req, res) => {
 
+//Getting auth header
+  let headerAuth  = req.headers['authorization'];
+  let userId      = jwtHelper.getUserId(headerAuth);
+
+  // Params
+  let id = req.body.id;
+  let title = req.body.title;
+  let picture = req.body.picture;
+  let price = req.body.price;
+  let desc = req.body.desc;
+  let zip = req.body.zip;
+
+  console.log(id);
+
+  asyncLib.waterfall([
+    function(done) {
+      models.Advert.findOne({
+        attributes: ['id','userId', 'title', 'picture', 'price', 'desc', 'zip'],
+        where: { id : id,
+                 userId: userId
+        }
+      }).then(function (advertFound) {
+        // console.log(advertFound);
+        done(null, advertFound);
+      })
+        .catch(function(err) {
+          console.log(err);
+          return res.status(500).json({ 'error': 'unable to found advert' });
+        });
+    },
+    function(advertFound, done) {
+      if(advertFound) {
+        advertFound.update({
+          title: (title ? title : advertFound.title),
+          picture: (picture ? picture : advertFound.picture),
+          price: (price ? price : advertFound.price),
+          desc: (desc ? desc : advertFound.desc),
+          zip: (zip ? zip : advertFound.zip)
+        }).then(function() {
+          done(advertFound);
+        }).catch(function(err) {
+          console.log("2nd function during the update " + err);
+          res.status(500).json({ 'error': 'cannot update advert' });
+        });
+      } else {
+        // console.log("pas d'advert");
+        res.status(404).json({ 'error': 'advert not found' });
+      }
+    },
+  ], function(advertFound) {
+    if (advertFound) {
+      return res.status(201).json(advertFound);
+    } else {
+      return res.status(500).json({ 'error': 'cannot update advert' });
+    }
+  });
+
 };
 
 deleteAdvert = (req, res) => {
@@ -178,5 +235,6 @@ module.exports = {
   createAdvert,
   getAllAdvert,
   getDetailAdvert,
-  getUserAdvert
+  getUserAdvert,
+  updateAdvert
 };

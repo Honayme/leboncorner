@@ -101,7 +101,7 @@ login = (req, res) => {
   }
 
   asyncLib.waterfall([
-    //1st function
+    //1st function we find the user
     function (done) {
         models.User.findOne({
           where: {email: email}
@@ -115,7 +115,7 @@ login = (req, res) => {
             return res.status(500).json({'error': 'unable to verify user'});
           });
       },
-    //2nd function
+    //2nd function we compare the given password with the password in database
     function (userFound, done) {
         if (userFound) {
           bcrypt.compare(password, userFound.password, function (errBycrypt, resBycrypt) {
@@ -125,7 +125,7 @@ login = (req, res) => {
           return res.status(404).json({'error': 'user not exist in DB'});
         }
       },
-    //3rd function
+    //3rd function if it's correct we get the user
     function (userFound, resBycrypt, done) {
         if (resBycrypt) {
           done(userFound);
@@ -187,6 +187,7 @@ updateUserProfile = (req, res) => {
         done(null, userFound);
       })
         .catch(function(err) {
+          console.log(err);
           return res.status(500).json({ 'error': 'unable to verify user' });
         });
     },

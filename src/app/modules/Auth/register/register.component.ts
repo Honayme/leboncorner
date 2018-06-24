@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {RegisterService} from '../resgister.service';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,16 +10,12 @@ export class RegisterComponent implements OnInit {
 
   registerData = {};
 
-  constructor(private registerService: RegisterService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
   }
 
   post() {
-    this.registerService.sendUserRegistration(this.registerData).subscribe(registerData => {
-      this.registerData = registerData;
-      console.log((this.registerData));
-    });
-
+    this.authService.registerUser(this.registerData);
   }
 }
