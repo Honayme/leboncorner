@@ -229,6 +229,52 @@ updateAdvert = (req, res) => {
 };
 
 deleteAdvert = (req, res) => {
+//Getting auth header
+  let headerAuth  = req.headers['authorization'];
+  let userId      = jwtHelper.getUserId(headerAuth);
+
+  // Params
+  let id = req.body.id;
+
+  asyncLib.waterfall([
+    function(done) {
+      models.Advert.findOne({
+        attributes: ['id','userId'],
+        where: { id : id,
+          userId: userId
+        }
+      }).then(function (advertFound) {
+        console.log(advertFound);
+        done(null, advertFound);
+      })
+        .catch(function(err) {
+          console.log(err);
+          return res.status(500).json({ 'error': 'unable to destroy advert' });
+        });
+    },
+    function(advertFound, done) {
+      if(advertFound) {
+        advertFound.destroy({
+          where: { id : id,
+            userId: userId
+          }
+        }).then(function() {
+          done(advertFound);
+        }).catch(function(err) {
+          console.log("2nd function during the destroy " + err);
+          res.status(500).json({ 'error': 'cannot destroy advert' });
+        });
+      } else {
+        res.status(404).json({ 'error': 'advert not found' });
+      }
+    },
+  ], function(advertFound) {
+    if (advertFound) {
+      return res.status(201).json(advertFound);
+    } else {
+      return res.status(500).json({ 'error': 'cannot destroy advert' });
+    }
+  });
 
 };
 
@@ -238,5 +284,6 @@ module.exports = {
   getAllAdvert,
   getDetailAdvert,
   getUserAdvert,
-  updateAdvert
+  updateAdvert,
+  deleteAdvert
 };
