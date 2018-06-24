@@ -20,10 +20,13 @@
           <span class="help-block"
                 *ngIf="(advertForm.get('title').touched || advertForm.get('title').dirty) && advertForm.get('title').errors">
                             <span *ngIf="advertForm.get('title').errors.required">
-                                Please enter your first name.
+                                Please enter a title.
                             </span>
                             <span *ngIf="advertForm.get('title').errors.minlength">
-                                The first name must be longer than 3 characters.
+                                The title must be longer than 5 characters.
+                            </span>
+                            <span *ngIf="advertForm.get('desc').errors.maxLength">
+                                The title must be shorter than 40 characters.
                             </span>
           </span>
         </div>
@@ -38,13 +41,13 @@
         <div class="col-md-8">
           <input class="form-control"
                  id="pictureId"
-                 type="text"
+                 type="file"
                  placeholder="First Name (required)"
                  formControlName="picture"/>
           <span class="help-block"
                 *ngIf="(advertForm.get('picture').touched || advertForm.get('picture').dirty) && advertForm.get('picture').errors">
                             <span *ngIf="advertForm.get('picture').errors.required">
-                                Please enter your first name.
+                                Please upload an image.
                             </span>
           </span>
         </div>
@@ -59,15 +62,18 @@
         <div class="col-md-8">
           <input class="form-control"
                  id="priceId"
-                 type="text"
+                 type="number"
                  placeholder="price (required)"
                  formControlName="price"/>
           <span class="help-block"
                 *ngIf="(advertForm.get('price').touched || advertForm.get('price').dirty) && advertForm.get('price').errors">
                             <span *ngIf="advertForm.get('price').errors.required">
-                                Please enter your first name.
+                                Please give your advert a price.
                             </span>
-                        </span>
+                            <span *ngIf="advertForm.get('price').errors.min">
+                                Please enter a positive price
+                            </span>
+          </span>
         </div>
       </div>
 
@@ -86,7 +92,13 @@
           <span class="help-block"
                 *ngIf="(advertForm.get('desc').touched || advertForm.get('desc').dirty) && advertForm.get('desc').errors">
                             <span *ngIf="advertForm.get('desc').errors.required">
-                                Please enter your first name.
+                                Please give your advert a description.
+                            </span>
+                            <span *ngIf="advertForm.get('desc').errors.minLength">
+                                The description must be longer than 10 characters.
+                            </span>
+                            <span *ngIf="advertForm.get('desc').errors.maxLength">
+                                The description must be shorter than 500 characters.
                             </span>
           </span>
         </div>
@@ -101,13 +113,16 @@
         <div class="col-md-8">
           <input class="form-control"
                  id="zipId"
-                 type="text"
+                 type="number"
                  placeholder="zip (required)"
                  formControlName="zip"/>
           <span class="help-block"
                 *ngIf="(advertForm.get('zip').touched || advertForm.get('zip').dirty) && advertForm.get('zip').errors">
                             <span *ngIf="advertForm.get('zip').errors.required">
-                                Please enter your first name.
+                                Please give your advert a zip.
+                            </span>
+                            <span *ngIf="advertForm.get('zip').errors.min">
+                                Please enter a positive zip code.
                             </span>
           </span>
         </div>
