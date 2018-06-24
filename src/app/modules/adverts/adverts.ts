@@ -16,7 +16,6 @@ export class Adverts {
     this.picture = picture ;
     this.price = price ;
     this.desc = desc ;
-    this.price = price ;
     this.zip = zip ;
   }
 

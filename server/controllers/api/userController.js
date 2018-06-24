@@ -14,6 +14,7 @@ let register,
     getUserProfile,
     updateUserProfile;
 
+//TODO Respecter la structure d'une annonce sur les caractères minimums et maximun
 
 register = (req, res) => {
 
