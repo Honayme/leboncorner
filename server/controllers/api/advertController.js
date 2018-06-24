@@ -23,6 +23,25 @@ createAdvert = (req, res) => {
       desc    = req.body.desc,
       zip     = req.body.zip;
 
+  if (title == null || picture == null || price == null || desc == null || zip == null ) {
+    return res.status(400).json({'error': 'missing parameters'})
+  }
+
+  if (title.length >= 40 || title.length <= 5) {
+    return res.status(400).json({'error': 'title must contain min 5 and max 40 letters'})
+  }
+
+  if (price <= 0) {
+    return res.status(400).json({'error': 'Price must be a positive number'})
+  }
+
+  if (zip <= 0) {
+    return res.status(400).json({'error': 'Zip must be a positive number'})
+  }
+
+  if (desc.length >= 500 || desc.length <= 10) {
+    return res.status(400).json({'error': 'description must contain min 10 and max 500 letters'})
+  }
 
   asyncLib.waterfall([
     function(done) {
@@ -181,7 +200,26 @@ updateAdvert = (req, res) => {
   let desc = req.body.desc;
   let zip = req.body.zip;
 
-  console.log(id);
+  if (title == null || picture == null || price == null || desc == null || zip == null ) {
+    return res.status(400).json({'error': 'missing parameters'})
+  }
+
+  if (title.length >= 40 || title.length <= 5) {
+    return res.status(400).json({'error': 'title must contain min 5 and max 40 letters'})
+  }
+
+  if (price <= 0) {
+    return res.status(400).json({'error': 'Price must be a positive number'})
+  }
+
+  if (zip <= 0) {
+    return res.status(400).json({'error': 'Zip must be a positive number'})
+  }
+
+  if (desc.length >= 500 || desc.length <= 10) {
+    return res.status(400).json({'error': 'description must contain min 10 and max 500 letters'})
+  }
+
 
   asyncLib.waterfall([
     function(done) {
