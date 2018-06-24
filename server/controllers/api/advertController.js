@@ -93,10 +93,11 @@ getAllAdvert = (req, res) => {
 };
 
 getDetailAdvert= (req, res) => {
-  let fields  = req.query.fields;
-  let limit   = parseInt(req.query.limit);
-  let offset  = parseInt(req.query.offset);
-  let order   = req.query.order;
+  let fields    = req.query.fields;
+  let limit     = parseInt(req.query.limit);
+  let offset    = parseInt(req.query.offset);
+  let order     = req.query.order;
+  let advertId  = req.body.id ;
 
 
   models.Advert.findAll({
@@ -107,7 +108,8 @@ getDetailAdvert= (req, res) => {
     include: [{
       model: models.User,
       attributes: [ 'username' ]
-    }]
+    }],
+    where: {id : advertId}
   }).then(function(advert) {
     if (advert) {
       res.status(200).json(advert);
