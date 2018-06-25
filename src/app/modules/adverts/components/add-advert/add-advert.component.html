@@ -41,7 +41,7 @@
         <div class="col-md-8">
           <input class="form-control"
                  id="pictureId"
-                 type="file"
+                 type="text"
                  placeholder="First Name (required)"
                  formControlName="picture"/>
           <span class="help-block"
@@ -134,7 +134,8 @@
           <span>
               <button class="btn btn-primary"
                       type="submit"
-                      [disabled]="!advertForm.valid">
+                      [disabled]="!advertForm.valid"
+                      (click)="save()">
                   Save
               </button>
           </span>
