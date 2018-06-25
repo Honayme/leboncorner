@@ -1,10 +1,13 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <nav class="navbar fixed-top navbar-dark bg-primary">
   <a class="navbar-brand" routerLink="/register">
-    <button class="alert-dark" >Register</button>
+    <button *ngIf="!authService.isAuthenticated" class="alert-dark" >Register</button>
+  </a>
+  <a class="navbar-brand" routerLink="/register">
+    <button *ngIf="authService.isAuthenticated" class="alert-dark" (click)="authService.logout()">Logout</button>
   </a>
   <a class="navbar-brand" routerLink="/login">
-    <button class="alert-dark" >Login</button>
+    <button *ngIf="!authService.isAuthenticated" class="alert-dark" >Login</button>
   </a>
   <a class="navbar-brand" routerLink="/adverts">
     <button class="alert-dark" >Annonces</button>

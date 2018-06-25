@@ -9,28 +9,30 @@ export class AdvertsService {
 
   constructor(private http: HttpClient) {
   }
+
+    path = 'http://localhost:3000/api/adverts';
+
     getAll(): Observable<Adverts[]> {
-      // return this.http.get<Adverts[]>('/api/adverts/all'); Run build
-      return this.http.get<Adverts[]>('http://localhost:3000/api/adverts/all');
+      return this.http.get<Adverts[]>(this.path + '/all');
     }
 
     getDetail(id: number): Observable<Adverts[]> {
-      return this.http.get<Adverts[]>('http://localhost:3000/api/adverts/detail/' + id);
+      return this.http.get<Adverts[]>(this.path + '/detail/' + id);
     }
 
     getUserAdvert(): Observable<Adverts[]> {
-      return this.http.get<Adverts[]>('http://localhost:3000/api/adverts/me');
+      return this.http.get<Adverts[]>(this.path + '/me');
     }
 
     createAdvert(data): Observable<Adverts[]> {
-      return this.http.post<Adverts[]>('http://localhost:3000/api/adverts/create', data);
+      return this.http.post<Adverts[]>(this.path + '/create', data);
     }
 
     updateAdvert(data): Observable<Adverts[]> {
-      return this.http.put<Adverts[]>('http://localhost:3000/api/adverts/update', data.id);
+      return this.http.put<Adverts[]>(this.path + '/update', data.id);
     }
 
     deleteAdvert(id: number): Observable<Adverts[]> {
-      return this.http.delete<Adverts[]>('http://localhost:3000/api/adverts/delete');
+      return this.http.delete<Adverts[]>(this.path + '/delete');
     }
 }

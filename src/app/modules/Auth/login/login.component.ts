@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   }
 
   post() {
-    this.authService.logInUser(this.loginData)
+    this.authService.logInUser(this.loginData);
   }
 
 }

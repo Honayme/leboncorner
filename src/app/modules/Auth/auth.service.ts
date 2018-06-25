@@ -5,20 +5,29 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AuthService {
 
+  path = 'http://localhost:3000/api/users';
+  TOKEN_KEY = 'token';
+
   constructor(private http: HttpClient) {
   }
 
-  //TODO Property 'token' does not exist on type 'Object'.
-  // return this.http.get<Adverts[]>('/api/users/register'); Run build
+  get token() {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+  get isAuthenticated() {
+    return !!localStorage.getItem(this.TOKEN_KEY);
+  }
+  logout(){
+    localStorage.removeItem(this.TOKEN_KEY);
+  }
   logInUser(loginData) {
-    return this.http.post('http://localhost:3000/api/users/login', loginData).subscribe(res => {
+    return this.http.post<any>(this.path + '/login', loginData).subscribe(res => {
       console.log(res.token);
-      localStorage.setItem('token', res.token);
+      localStorage.setItem(this.TOKEN_KEY, res.token);
     });
   }
-  // return this.http.get<Adverts[]>('/api/users/register'); Run build
   registerUser(registerData) {
-    return this.http.post('http://localhost:3000/api/users/register', registerData).subscribe(res => {
+    return this.http.post(this.path + '/register', registerData).subscribe(res => {
       console.log(res);
     });
   }
