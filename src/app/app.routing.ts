@@ -10,7 +10,7 @@ import {LoginComponent} from './modules/Auth/login/login.component';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'adverts'},
   { path: 'adverts', component: AdvertsComponent},
-  { path: 'advert', component: AdvertComponent},
+  { path: 'advert/:id', component: AdvertComponent},
   { path: 'addAdvert', component: AddAdvertComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'login', component: LoginComponent},

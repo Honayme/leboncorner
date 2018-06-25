@@ -14,8 +14,8 @@ export class AdvertsService {
       return this.http.get<Adverts[]>('http://localhost:3000/api/adverts/all');
     }
 
-    getDetail(): Observable<Adverts[]> {
-      return this.http.get<Adverts[]>('http://localhost:3000/api/adverts/detail');
+    getDetail(id: number): Observable<Adverts[]> {
+      return this.http.get<Adverts[]>('http://localhost:3000/api/adverts/detail/' + id);
     }
 
     getUserAdvert(): Observable<Adverts[]> {
@@ -30,7 +30,7 @@ export class AdvertsService {
       return this.http.put<Adverts[]>('http://localhost:3000/api/adverts/update', data.id);
     }
 
-    deleteAdvert(): Observable<Adverts[]> {
+    deleteAdvert(id: number): Observable<Adverts[]> {
       return this.http.delete<Adverts[]>('http://localhost:3000/api/adverts/delete');
     }
 }

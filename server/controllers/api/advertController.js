@@ -92,7 +92,7 @@ getAllAdvert = (req, res) => {
 
   models.Advert.findAll({
     order:      [(order != null) ? order.split(':') : ['title', 'ASC']],
-    attributes: ['title'],
+    attributes: ['id', 'title'],
     limit:      (!isNaN(limit)) ? limit : null,
     offset:     (!isNaN(offset)) ? offset : null,
     include: [{
@@ -116,7 +116,7 @@ getDetailAdvert= (req, res) => {
   let limit     = parseInt(req.query.limit);
   let offset    = parseInt(req.query.offset);
   let order     = req.query.order;
-  let advertId  = req.body.id ;
+  let advertId  = req.params.id;
 
 
   models.Advert.findAll({
