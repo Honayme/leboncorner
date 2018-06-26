@@ -36,26 +36,26 @@ export class AddAdvertComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     this.Advert = new Adverts('', '', '', '', '', '');
 
-    // if (id) {
-    //   this.update = true;
-    //   this.advertsService.getDetail(id).subscribe(advert => {
-    //     // this.Advert.id = advert.id;
-    //     this.advertForm.patchValue(advert);
-    //   });
-    // }
-
-
+    if (id) {
+      this.update = true;
+      this.advertsService.getDetail(id).subscribe(advert => {
+        // this.Advert.id = advert.id;
+        this.advertForm.patchValue(advert);
+      });
+    }
   }
 
   save() {
     this.Advert = Object.assign(this.Advert, this.advertForm.value);
-    if (!this.update) {
+    if (this.update !== true) {
       this.advertsService.createAdvert(this.Advert).subscribe(Advert => {
           this.router.navigate(['/adverts']);
+          console.log("create");
         });
     } else {
       this.advertsService.updateAdvert(this.Advert).subscribe(Advert => {
         this.router.navigate(['/adverts']);
+        console.log("update");
       });
     }
   }

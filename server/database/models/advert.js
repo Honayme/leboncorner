@@ -19,3 +19,4 @@ module.exports = (sequelize, DataTypes) => {
 };
 
 //TODO Put validation on model http://docs.sequelizejs.com/manual/tutorial/models-definition.html#model-validations
+//TODO Make a seed of data in order to have some advert

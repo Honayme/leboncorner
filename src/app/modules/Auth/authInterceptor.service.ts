@@ -10,7 +10,7 @@ export class AuthInterceptorService implements HttpInterceptor {
   intercept(req, next) {
     let auth = this.injector.get(AuthService);
     const authRequest = req.clone({
-      header: req.headers.set('Authorization', 'Bearer ' + auth.token)
+      headers: req.headers.set('Authorization', 'Bearer ' + auth.token)
     });
     return next.handle(authRequest);
   }
