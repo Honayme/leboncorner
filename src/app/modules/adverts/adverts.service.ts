@@ -28,11 +28,11 @@ export class AdvertsService {
       return this.http.post<Adverts[]>(this.path + '/create', data);
     }
 
-    updateAdvert(data): Observable<Adverts[]> {
-      return this.http.put<Adverts[]>(this.path + '/update', data.id);
+    updateAdvert(data): Observable<Adverts> {
+      return this.http.put<Adverts>(this.path + '/update' , data);
     }
 
-    deleteAdvert(id: number): Observable<Adverts[]> {
-      return this.http.delete<Adverts[]>(this.path + '/delete');
+    deleteAdvert(id: number): Observable<boolean> {
+      return this.http.delete<boolean>(this.path + '/delete/' + id);
     }
 }

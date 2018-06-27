@@ -8,7 +8,7 @@ const generateUserToken = (userData) => {
     },
       SECRET,
       {
-        expiresIn: '1h'
+        expiresIn: '24h'
       })
 };
 

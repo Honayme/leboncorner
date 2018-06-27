@@ -1,5 +1,5 @@
 export class Adverts {
-  _id: number;
+  id: number;
   userId: string;
   title: string;
   picture: string;
@@ -10,7 +10,7 @@ export class Adverts {
   updateAt: Date;
 
   constructor(id, title, picture, desc, price, zip) {
-    this._id = id;
+    this.id = id;
     this.title = title;
     this.picture = picture ;
     this.price = price ;

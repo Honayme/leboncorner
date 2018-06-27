@@ -12,6 +12,9 @@
   <a class="navbar-brand" routerLink="/adverts">
     <button class="alert-dark" >Annonces</button>
   </a>
+  <a class="navbar-brand" routerLink="/myAdverts">
+    <button *ngIf="authService.isAuthenticated" class="alert-dark" >Mes annonces</button>
+  </a>
 </nav>
 
 

@@ -36,11 +36,12 @@ export class AddAdvertComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     this.Advert = new Adverts('', '', '', '', '', '');
 
+    console.log(id);
     if (id) {
       this.update = true;
-      this.advertsService.getDetail(id).subscribe(advert => {
-        // this.Advert.id = advert.id;
-        this.advertForm.patchValue(advert);
+      this.advertsService.getDetail(id).subscribe( (advert: any) => {
+        this.Advert.id = advert[0].id;
+        this.advertForm.patchValue(advert[0]);
       });
     }
   }

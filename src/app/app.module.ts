@@ -15,6 +15,8 @@ import { RegisterComponent } from './modules/Auth/register/register.component';
 import { LoginComponent } from './modules/Auth/login/login.component';
 import { AuthService } from './modules/Auth/auth.service';
 import { AuthInterceptorService } from './modules/Auth/authInterceptor.service';
+import { MyAdvertComponent } from './modules/adverts/pages/my-advert/my-advert.component';
+import { DeleteAdvertComponent } from './modules/adverts/components/delete-advert/delete-advert.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { AuthInterceptorService } from './modules/Auth/authInterceptor.service';
     AdvertComponent,
     AddAdvertComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    MyAdvertComponent,
+    DeleteAdvertComponent
   ],
   imports: [
     BrowserModule,
