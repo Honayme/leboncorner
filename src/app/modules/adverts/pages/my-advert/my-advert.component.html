@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div *ngFor="let advert of adverts" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="card">
+        <img class="card-img-top" src="https://picsum.photos/605/100/?random" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">{{advert.title}}</h4>
+          <p class="card-text">
+            Some quick example text to build on the card title
+            and make up the bulk of the card's content.
+          </p>
+          <a [routerLink]="['/updateAdvert/' + advert.id]" class="btn btn-primary">
+            Modifier l'annonce
+          </a>
+          <a [routerLink]="['/deleteAdvert/' + advert.id]" class="btn btn-primary">
+            Supprimer l'annonce
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
