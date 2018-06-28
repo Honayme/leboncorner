@@ -2,7 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Advert = sequelize.define('Advert', {
     title: DataTypes.STRING,
-    picture: DataTypes.STRING,
+    picture: DataTypes.TEXT,
     price: DataTypes.INTEGER,
     desc: DataTypes.STRING,
     zip: DataTypes.INTEGER,

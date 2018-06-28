@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" xmlns:data="http://www.w3.org/1999/xhtml">
   <form class="form-group row"
         novalidate
         (ngSubmit)="save()"
@@ -39,10 +39,12 @@
                for="pictureId">Picture</label>
 
         <div class="col-md-8">
+          <img *ngIf="image" [src]=sanitize.bypassSecurityTrustUrl(image)>
           <input class="form-control"
                  id="pictureId"
-                 type="text"
-                 placeholder="First Name (required)"
+                 type="file"
+                 accept="image/*"
+                 (change)="changeListener($event)"
                  formControlName="picture"/>
           <span class="help-block"
                 *ngIf="(advertForm.get('picture').touched || advertForm.get('picture').dirty) && advertForm.get('picture').errors">
