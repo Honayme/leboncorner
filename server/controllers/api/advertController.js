@@ -272,7 +272,9 @@ deleteAdvert = (req, res) => {
   let userId      = jwtHelper.getUserId(headerAuth);
 
   // Params
-  let id = req.body.id;
+  // let id = req.body.id;
+  let id  = req.params.id;
+
 
   asyncLib.waterfall([
     function(done) {

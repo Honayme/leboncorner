@@ -11,6 +11,6 @@ router.get('/all', advertController.getAllAdvert);
 router.get('/detail/:id', advertController.getDetailAdvert);
 router.get('/me', advertController.getUserAdvert);
 router.put('/update', advertController.updateAdvert);
-router.delete('/delete', advertController.deleteAdvert);
+router.delete('/delete/:id', advertController.deleteAdvert);
 
 module.exports = router;

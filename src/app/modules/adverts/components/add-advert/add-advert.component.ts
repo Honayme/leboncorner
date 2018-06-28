@@ -61,11 +61,6 @@ export class AddAdvertComponent implements OnInit {
     }
   }
 
-  // save() {
-  //   console.log(this.advertForm);
-  //   console.log('Saved: ' + JSON.stringify(this.advertForm.value));
-  // }
-
   //TODO ne marche plus à cause de la photo en type file
   populateTestData(): void {
     this.advertForm.setValue({

@@ -10,7 +10,6 @@ import {Adverts} from '../../adverts';
 })
 export class DeleteAdvertComponent implements OnInit {
 
-  Advert: Adverts;
 
   constructor(private advertsService: AdvertsService,
               private route: ActivatedRoute,
@@ -18,11 +17,13 @@ export class DeleteAdvertComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
+
     console.log(id);
-    this.advertsService.deleteAdvert(id)
+
+    this.advertsService.deleteAdvert(this.route.snapshot.params['id'])
       .subscribe((status: boolean) => {
         if (status) {
-          this.router.navigate(['/adverts']);
+          this.router.navigate(['/myAdverts']);
         } else {
           console.log("Unable to delete advert");
         }
