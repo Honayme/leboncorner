@@ -1,4 +1,23 @@
-# Leboncorner
+# SET UP Leboncorner
+En ligne de commande se positonner à la racine du projet et lancer 
+
+> npm i
+
+Créer un .env à la racine du fichier et y insérer les valeur requise tel que dans le example.env
+
+Entrer les informations de votre SGBD dans le .env
+
+Créer une table dans votre serveur local telle que vous l'aurez nommé dans votre .env
+    
+Se placer dans le repertoir leboncorner\server\database et lancer la commande suivante
+    
+> sequelize db:migrate
+    
+En se positionant à la racine du projet lancer respectivement les commandes 
+    
+>node server.js 
+
+>ng serve 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.7.
 
