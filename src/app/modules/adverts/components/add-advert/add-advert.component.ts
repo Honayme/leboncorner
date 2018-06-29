@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 
 
-import {FormGroup, FormBuilder, Validators, AbstractControl} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {AdvertsService} from '../../adverts.service';
 
 @Component({
@@ -14,7 +14,6 @@ import {AdvertsService} from '../../adverts.service';
 })
 export class AddAdvertComponent implements OnInit {
   advertForm: FormGroup;
-  // advert: Adverts = new Adverts();
   Advert: Adverts;
   update = false;
   image = '';
@@ -27,7 +26,6 @@ export class AddAdvertComponent implements OnInit {
               public sanitize: DomSanitizer) {
   }
 
-  // TODO  Respecter la struture du formulaire avec les validators
   ngOnInit(): void {
     this.advertForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(40)]],
@@ -40,19 +38,14 @@ export class AddAdvertComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     this.Advert = new Adverts('', '', '', '', '', '');
 
-    console.log(id);
+    // Fait un populate du form si il y a un ID dans en paramètre
     if (id) {
       this.update = true;
       this.advertsService.getDetail(id).subscribe( (advert: any) => {
-        console.log(advert[0]);
-
         this.Advert.id = advert[0].id;
-        console.log(advert[0]);
-
         this.image = advert[0].picture;
-        console.log(advert[0]);
 
-        //Patch value avec l'objet entier bug à cause de l'image, reactiv form a du mal avec le type file
+        // Le patchValue n'arrive pas à remplir l'input type="file" avec un string
         this.advertForm.patchValue({
           title : advert[0].title,
           price : advert[0].price,
@@ -63,6 +56,7 @@ export class AddAdvertComponent implements OnInit {
     }
   }
 
+  // Update si il y a un ID Create si il n'y en a pas
   save() {
     this.Advert = Object.assign(this.Advert, this.advertForm.value);
     this.Advert.picture = this.image;
@@ -79,7 +73,7 @@ export class AddAdvertComponent implements OnInit {
     }
   }
 
-  //TODO ne marche plus à cause de la photo en type file
+  // Fonction pour remplir le formulaire
   populateTestData(): void {
     this.advertForm.setValue({
       title: 'Vélo de montagne',
@@ -90,7 +84,7 @@ export class AddAdvertComponent implements OnInit {
     });
   }
 
-  // IMAGE
+  // Permet de convertir l'image en Base64
   changeListener($event): void {
     this.readThis($event.target);
   }
@@ -101,7 +95,6 @@ export class AddAdvertComponent implements OnInit {
 
     myReader.onloadend = (e) => {
       this.image = myReader.result;
-      // console.log(this.image);
     };
     myReader.readAsDataURL(file);
 

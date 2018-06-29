@@ -15,6 +15,7 @@ export class AuthService {
     return localStorage.getItem(this.TOKEN_KEY);
   }
   get isAuthenticated() {
+    // TODO Add method to check is it's a valid token
     return !!localStorage.getItem(this.TOKEN_KEY);
   }
   logout() {

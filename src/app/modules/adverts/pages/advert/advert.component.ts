@@ -19,8 +19,8 @@ export class AdvertComponent implements OnInit {
   ngOnInit() {
     this.advertsService.getDetail((this.route.snapshot.params['id'])).subscribe(advert => {
       this.advert = advert;
-      console.log((this.advert));
     });
+
   }
 
 }

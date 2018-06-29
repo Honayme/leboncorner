@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AdvertsService} from '../../adverts.service';
-import {Adverts} from '../../adverts';
 import {Router} from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-my-advert',
@@ -12,7 +13,9 @@ export class MyAdvertComponent implements OnInit {
 
   adverts: any = [];
 
-  constructor(private advertsService: AdvertsService, private router: Router) { }
+  constructor(private advertsService: AdvertsService,
+              private router: Router,
+              public sanitize: DomSanitizer) { }
 
   ngOnInit() {
     this.advertsService.getUserAdvert().subscribe(adverts => {

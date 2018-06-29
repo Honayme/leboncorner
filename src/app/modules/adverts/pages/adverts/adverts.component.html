@@ -1,24 +1,22 @@
 <!--TODO Do not display add advert button if we are not connected-->
 <!--TODO disabled button see an advert if we are not connected-->
-<p>Adverts Works</p>
-<a class="navbar-brand" routerLink="/addAdvert">
+<a *ngIf="authService.isAuthenticated" class="navbar-brand" routerLink="/addAdvert">
   <button class="alert-dark">Ajouter une annonce</button>
 </a>
 <div class="container">
   <div class="row">
     <div *ngFor="let advert of adverts" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="card">
-        <img *ngIf="image" [src]=sanitize.bypassSecurityTrustUrl(image)>
         <div class="card-body">
           <h4 class="card-title">{{advert.title}}</h4>
           <p class="card-text">
-            Some quick example text to build on the card title
-            and make up the bulk of the card's content.
+            {{advert.desc}}
           </p>
-          <a [routerLink]="['/advert/' + advert.id]" class="btn btn-primary">
+          <a *ngIf="authService.isAuthenticated" [routerLink]="['/advert/' + advert.id]" class="btn btn-primary">
             Voir l'annonce
           </a>
         </div>
+        <div class="card-footer">By {{advert.User.username}}</div>
       </div>
     </div>
   </div>

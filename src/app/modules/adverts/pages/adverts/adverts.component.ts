@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {AdvertsService} from '../../adverts.service';
+import { AdvertsService} from '../../adverts.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { AuthService } from '../../../Auth/auth.service';
 
 
 @Component({
@@ -12,7 +13,9 @@ export class AdvertsComponent implements OnInit {
 
   adverts: any = [];
 
-  constructor( private advertsService: AdvertsService, public sanitize: DomSanitizer) {}
+  constructor( private advertsService: AdvertsService,
+               public authService: AuthService,
+               public sanitize: DomSanitizer) {}
 
   ngOnInit() {
     this.advertsService.getAll().subscribe(adverts => {

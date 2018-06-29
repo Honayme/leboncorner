@@ -92,7 +92,7 @@ getAllAdvert = (req, res) => {
 
   models.Advert.findAll({
     order:      [(order != null) ? order.split(':') : ['title', 'ASC']],
-    attributes: ['id', 'title'],
+    attributes: ['id', 'title', 'desc'],
     limit:      (!isNaN(limit)) ? limit : null,
     offset:     (!isNaN(offset)) ? offset : null,
     include: [{

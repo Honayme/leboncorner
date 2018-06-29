@@ -2,7 +2,7 @@
   <div class="row">
     <div *ngFor="let advert of adverts" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="card">
-        <img class="card-img-top" src="https://picsum.photos/605/100/?random" alt="Card image cap">
+        <img class="card-img-top" *ngIf="advert.picture" [src]=sanitize.bypassSecurityTrustUrl(advert.picture)>
         <div class="card-body">
           <h4 class="card-title">{{advert.title}}</h4>
           <p class="card-text">

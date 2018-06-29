@@ -1,27 +1,21 @@
-<!--<div *ngIf="advert" class="container">-->
 <div class="container">
   <div class="row">
     <div *ngFor="let adver of advert" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <div class="card">
-        <!--TODO s'occuper de l'image-->
-        <img class="card-img-top" *ngIf="adver.image" [src]=sanitize.bypassSecurityTrustUrl(adver.image)>
+        <img class="card-img-top" *ngIf="adver.picture" [src]=sanitize.bypassSecurityTrustUrl(adver.picture)>
         <div class="card-body">
           <h4 class="card-title">{{adver.title}}</h4>
           <p class="card-text">
-            {{adver.desc}}
+            Annonce: {{adver.desc}}
           </p>
           <p class="card-text">
-            {{adver.price}}
+            Prix: {{adver.price}} €
           </p>
           <p class="card-text">
-            {{adver.zip}}
+            Code postal: {{adver.zip}}
           </p>
-          <!--<a [routerLink]="['/advert/' + adver.id]" class="btn btn-primary">-->
-            <!--Voir l'annonce-->
-          <!--</a>-->
         </div>
       </div>
     </div>
   </div>
 </div>
-<!--</div>-->
